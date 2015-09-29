@@ -168,3 +168,34 @@ class Swirly(object):
 
             effect = self.effects.pop()
             self.effects.insert(0, effect)
+
+    def show_as_thread(self,event):
+        step = 0
+
+        expire = datetime.datetime.now() + timedelta(seconds=seconds_to_show)
+
+        while event.is_set() == False:
+            for i in range(500):
+                for y in range(8):
+                    for x in range(8):
+                        r, g, b = self.effects[0](x, y, step)
+                        if i > 400:
+                            r2, g2, b2 = self.effects[-1](x, y, step)
+
+                            ratio = (500.00 - i) / 100.0
+                            r = r * ratio + r2 * (1.0 - ratio)
+                            g = g * ratio + g2 * (1.0 - ratio)
+                            b = b * ratio + b2 * (1.0 - ratio)
+                        r = int(max(0, min(255, r)))
+                        g = int(max(0, min(255, g)))
+                        b = int(max(0, min(255, b)))
+                        unicorn.set_pixel(x, y, r, g, b)
+
+                step += 1
+
+                unicorn.show()
+
+                time.sleep(0.01)
+
+            effect = self.effects.pop()
+            self.effects.insert(0, effect)

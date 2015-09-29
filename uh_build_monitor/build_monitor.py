@@ -1,10 +1,10 @@
 import logging
-import time
 from build_status import Status
 from swirly import Swirly
 
 import unicornhat as UH
 import time
+import threading
 
 
 class Monitor(object):
@@ -28,11 +28,14 @@ class Monitor(object):
             if build_status['activity'] != 'Building':
                 self.logger.debug('Not building')
 
+                self.stop_building_display()
+
                 self.set_build_result(build_status)
-                time.sleep(5)
 
             else:
                 self.do_building()
+
+            time.sleep(5)
 
     def get_status(self):
         status = Status(self.go_server)
@@ -66,4 +69,18 @@ class Monitor(object):
 
     def do_building(self):
         self.logger.debug("Building...")
-        self.swirly.show(5)
+        self.building_event = threading.Event()
+        self.building_thread = threading.Thread(name='non-block',
+                                                target=self.swirly.show_as_thread(),
+                                                args=(self.building_event))
+        self.building_thread.start()
+        self.logger.debug("Started building thread")
+
+    def stop_building_display(self):
+        if self.building_event:
+            self.logger.debug('Waiting for thread to stop')
+            self.building_event.set()
+            self.building_thread.join()
+            self.logger.debug('Thread stopped')
+            self.building_event = None
+            self.building_thread = None
