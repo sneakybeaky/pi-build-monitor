@@ -30,7 +30,7 @@ install_requires=open(join(setup_dir, 'requirements.txt')).readlines()
 
 setup(
     name=package_name,
-    version='0.3',
+    version='0.4',
     description='Raspberry PI & Unicorn HAT build monitor',
     author='Jon Barber & Iain Miller',
     author_email='jon.barber@acm.org',
