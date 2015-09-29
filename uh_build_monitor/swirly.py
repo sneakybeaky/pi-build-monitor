@@ -172,8 +172,6 @@ class Swirly(object):
     def show_as_thread(self,event):
         step = 0
 
-        expire = datetime.datetime.now() + timedelta(seconds=seconds_to_show)
-
         while event.is_set() == False:
             for i in range(500):
                 for y in range(8):
