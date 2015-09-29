@@ -9,7 +9,10 @@ from six import iteritems
 from gocd_parser.retriever import url
 
 class Status(object):
-    '''A handler for cctray xml files.'''
+    '''A handler for cctray xml files.
+    activity	The current state of the project	string enum : Sleeping, Building, CheckingModifications
+    lastBuildStatus	A brief description of the last build	string enum : Pending, Success, Failure, Exception, Unknown
+    '''
 
     def __init__(self, go_server):
         '''Convert a string of cctray xml into python. From this, gather
