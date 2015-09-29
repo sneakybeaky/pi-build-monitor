@@ -18,6 +18,8 @@ class Monitor(object):
 
         self.logger.debug("Monitoring {0}".format(buildname))
         self.swirly = Swirly()
+        UH.brightness(0.2)
+
 
     def monitor(self):
         self.logger.debug("Starting to monitor")

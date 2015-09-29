@@ -10,7 +10,6 @@ class Swirly(object):
     def __init__(self):
 
         self.effects = [self.tunnel, self.rainbow_search, self.checker, self.swirl]
-        unicorn.brightness(0.05)
 
     # twisty swirly goodness
     def swirl(self, x, y, step):
