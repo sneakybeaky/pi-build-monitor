@@ -2,6 +2,9 @@ import logging
 import time
 from build_status import Status
 
+import unicornhat as UH
+import time
+
 
 class Monitor(object):
     '''Polls a GO build server and changes display depending on what happens
@@ -44,9 +47,21 @@ class Monitor(object):
 
     def set_build_success(self):
         self.logger.debug("Last build worked !")
+	for y in range(8):
+	    for x in range(8):
+                UH.set_pixel(x,y,0,255,0)
+                UH.show()
+                time.sleep(0.05)
 
     def set_build_failure(self):
         self.logger.debug("Last build failed !")
+
+        for y in range(8):
+            for x in range(8):
+                UH.set_pixel(x,y,255,0,0)
+                UH.show()
+                time.sleep(0.05)
+
 
     def do_building(self):
         self.logger.debug("Building...")
