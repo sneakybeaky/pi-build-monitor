@@ -38,6 +38,7 @@ class Status(object):
             project_name = project['@name']
             project_data = {}
             project_data['lastBuildStatus'] = project['@lastBuildStatus']
+            project_data['activity'] = project['@activity']
 
 
             build_date = datetime.strptime(
