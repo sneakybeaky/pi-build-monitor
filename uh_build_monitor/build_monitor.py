@@ -1,6 +1,7 @@
 import logging
 import time
 from build_status import Status
+from swirly import Swirly
 
 import unicornhat as UH
 import time
@@ -16,7 +17,7 @@ class Monitor(object):
         self.logger = logging.getLogger(__name__+'.Monitor')
 
         self.logger.debug("Monitoring {0}".format(buildname))
-
+	self.swirly = Swirly()
 
     def monitor(self):
         self.logger.debug("Starting to monitor")
@@ -65,4 +66,4 @@ class Monitor(object):
 
     def do_building(self):
         self.logger.debug("Building...")
-        time.sleep(5)
+	self.swirly.show()
