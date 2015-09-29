@@ -19,6 +19,7 @@ class Monitor(object):
         self.logger.debug("Monitoring {0}".format(buildname))
         self.swirly = Swirly()
         UH.brightness(0.2)
+        self.building_event = None
 
 
     def monitor(self):
@@ -71,15 +72,17 @@ class Monitor(object):
 
     def do_building(self):
         self.logger.debug("Building...")
-        self.building_event = threading.Event()
-        self.building_thread = threading.Thread(name='non-block',
-                                                target=self.swirly.show_as_thread(),
-                                                args=(self.building_event))
-        self.building_thread.start()
-        self.logger.debug("Started building thread")
+
+	if self.building_event == None:
+            self.building_event = threading.Event()
+            self.building_thread = threading.Thread(name='non-block',
+                                                target=self.swirly.show_as_thread,
+                                                args=(self.building_event,))
+            self.building_thread.start()
+            self.logger.debug("Started building thread")
 
     def stop_building_display(self):
-        if self.building_event:
+        if self.building_event != None:
             self.logger.debug('Waiting for thread to stop')
             self.building_event.set()
             self.building_thread.join()
