@@ -2,6 +2,8 @@
 
 import unicornhat as unicorn
 import time, math, colorsys
+from datetime import timedelta
+import datetime
 
 class Swirly(object):
 
@@ -137,10 +139,13 @@ class Swirly(object):
 
         return (col[0] * 255, col[1] * 255, col[2] * 255)
 
-    def show(self):
+    def show(self,seconds_to_show):
 
         step = 0
-        while True:
+
+	expire = datetime.datetime.now() + timedelta(seconds=seconds_to_show)
+
+        while datetime.datetime.now() < expire:
             for i in range(500):
                 for y in range(8):
                     for x in range(8):              

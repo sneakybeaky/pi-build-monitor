@@ -29,6 +29,7 @@ class Monitor(object):
                 self.logger.debug('Not building')
 
                 self.set_build_result(build_status)
+		time.sleep(5)
 
             else:
                 self.do_building()
@@ -66,4 +67,4 @@ class Monitor(object):
 
     def do_building(self):
         self.logger.debug("Building...")
-	self.swirly.show()
+	self.swirly.show(5)
