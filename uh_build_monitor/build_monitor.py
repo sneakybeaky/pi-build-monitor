@@ -14,10 +14,10 @@ class Monitor(object):
     def __init__(self, go_server, buildname):
         self.go_server = go_server
         self.buildname = buildname
-        self.logger = logging.getLogger(__name__+'.Monitor')
+        self.logger = logging.getLogger(__name__ + '.Monitor')
 
         self.logger.debug("Monitoring {0}".format(buildname))
-	self.swirly = Swirly()
+        self.swirly = Swirly()
 
     def monitor(self):
         self.logger.debug("Starting to monitor")
@@ -29,7 +29,7 @@ class Monitor(object):
                 self.logger.debug('Not building')
 
                 self.set_build_result(build_status)
-		time.sleep(5)
+                time.sleep(5)
 
             else:
                 self.do_building()
@@ -49,9 +49,9 @@ class Monitor(object):
 
     def set_build_success(self):
         self.logger.debug("Last build worked !")
-	for y in range(8):
-	    for x in range(8):
-                UH.set_pixel(x,y,0,255,0)
+        for y in range(8):
+            for x in range(8):
+                UH.set_pixel(x, y, 0, 255, 0)
                 UH.show()
                 time.sleep(0.05)
 
@@ -60,11 +60,10 @@ class Monitor(object):
 
         for y in range(8):
             for x in range(8):
-                UH.set_pixel(x,y,255,0,0)
+                UH.set_pixel(x, y, 255, 0, 0)
                 UH.show()
                 time.sleep(0.05)
 
-
     def do_building(self):
         self.logger.debug("Building...")
-	self.swirly.show(5)
+        self.swirly.show(5)

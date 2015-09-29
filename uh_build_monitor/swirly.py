@@ -5,23 +5,23 @@ import time, math, colorsys
 from datetime import timedelta
 import datetime
 
-class Swirly(object):
 
+class Swirly(object):
     def __init__(self):
 
         self.effects = [self.tunnel, self.rainbow_search, self.checker, self.swirl]
         unicorn.brightness(0.05)
 
     # twisty swirly goodness
-    def swirl(self,x, y, step):
+    def swirl(self, x, y, step):
         x -= 4
         y -= 4
 
-        dist = math.sqrt(pow(x, 2)+pow(y,2)) / 2.0
+        dist = math.sqrt(pow(x, 2) + pow(y, 2)) / 2.0
         angle = (step / 10.0) + (dist * 1.5)
         s = math.sin(angle);
-        c = math.cos(angle);    
-        
+        c = math.cos(angle);
+
         xs = x * c - y * s;
         ys = x * s + y * c;
 
@@ -32,14 +32,14 @@ class Swirly(object):
         return (r, r + (s * 130), r + (c * 130))
 
     # roto-zooming checker board
-    def checker(self,x, y, step):
+    def checker(self, x, y, step):
         x -= 4
         y -= 4
 
         angle = (step / 10.0)
         s = math.sin(angle);
-        c = math.cos(angle);    
-        
+        c = math.cos(angle);
+
         xs = x * c - y * s;
         ys = x * s + y * c;
 
@@ -62,7 +62,7 @@ class Swirly(object):
         return (r * 255, g * 255, b * 255)
 
     # weeee waaaah
-    def blues_and_twos(self,x, y, step):
+    def blues_and_twos(self, x, y, step):
         x -= 4
         y -= 4
 
@@ -74,14 +74,14 @@ class Swirly(object):
         b = math.sin(x * scale / 2.0) + math.cos(y * scale / 2.0)
         g = r - .8
         g = 0 if g < 0 else g
-        
+
         b -= r
         b /= 1.4
 
         return (r * 255, (b + g) * 255, g * 255)
 
     # rainbow search spotlights
-    def rainbow_search(self,x, y, step):
+    def rainbow_search(self, x, y, step):
         xs = math.sin((step) / 100.0) * 20.0
         ys = math.cos((step) / 100.0) * 20.0
 
@@ -93,7 +93,7 @@ class Swirly(object):
         return (r * 255, g * 255, b * 255)
 
     # zoom tunnel
-    def tunnel(self,x, y, step):
+    def tunnel(self, x, y, step):
 
         speed = step / 100.0
         x -= 4
@@ -116,11 +116,10 @@ class Swirly(object):
         if y > 0:
             angle += math.pi
 
-        angle /= 2 * math.pi # convert angle to 0...1 range
-        
+        angle /= 2 * math.pi  # convert angle to 0...1 range
+
         shade = math.sqrt(math.pow(x, 2) + math.pow(y, 2)) / 2.1
         shade = 1 if shade > 1 else shade
-        
 
         angle += speed
         depth = speed + (math.sqrt(math.pow(x, 2) + math.pow(y, 2)) / 10)
@@ -128,9 +127,8 @@ class Swirly(object):
         col1 = colorsys.hsv_to_rgb((step % 255) / 255.0, 1, .8)
         col2 = colorsys.hsv_to_rgb((step % 255) / 255.0, 1, .3)
 
-
         col = col1 if int(abs(angle * 6.0)) % 2 == 0 else col2
-        
+
         td = .3 if int(abs(depth * 3.0)) % 2 == 0 else 0
 
         col = (col[0] + td, col[1] + td, col[2] + td)
@@ -139,16 +137,16 @@ class Swirly(object):
 
         return (col[0] * 255, col[1] * 255, col[2] * 255)
 
-    def show(self,seconds_to_show):
+    def show(self, seconds_to_show):
 
         step = 0
 
-	expire = datetime.datetime.now() + timedelta(seconds=seconds_to_show)
+        expire = datetime.datetime.now() + timedelta(seconds=seconds_to_show)
 
         while datetime.datetime.now() < expire:
             for i in range(500):
                 for y in range(8):
-                    for x in range(8):              
+                    for x in range(8):
                         r, g, b = self.effects[0](x, y, step)
                         if i > 400:
                             r2, g2, b2 = self.effects[-1](x, y, step)
@@ -163,11 +161,10 @@ class Swirly(object):
                         unicorn.set_pixel(x, y, r, g, b)
 
                 step += 1
-                
+
                 unicorn.show()
 
                 time.sleep(0.01)
 
             effect = self.effects.pop()
             self.effects.insert(0, effect)
-
