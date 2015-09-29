@@ -31,45 +31,21 @@ class Status(object):
         self.logger.debug(json.dumps(projects, sort_keys=True,
                                      indent=2))
 
-        pipelines = {}
-        stages = 0
-        jobs = 0
-        status_totals = {}
-        total_age = 0
+        self.projects = {}
 
         for project in projects:
-            name_parts = project['@name'].split(' :: ')
-            self.logger.debug(name_parts)
-            pipeline_name = name_parts[0]
 
-            # record pipeline total
-            pipelines[pipeline_name] = int(
-                project['@lastBuildLabel'].split(' :: ')[0])
+            project_name = project['@name']
+            project_data = {}
+            project_data['lastBuildStatus'] = project['@lastBuildStatus']
 
-            # it's a stage
-            if len(name_parts) == 2:
-                # add to stage total
-                stages += 1
 
-                # add to status totals
-                if project['@lastBuildStatus'] in status_totals:
-                    status_totals[project['@lastBuildStatus']] += 1
-                else:
-                    status_totals[project['@lastBuildStatus']] = 1
+            build_date = datetime.strptime(
+                project['@lastBuildTime']+'UTC',
+                '%Y-%m-%dT%X%Z')
+            age = datetime.now() - build_date
 
-                # add to age totals
-                build_date = datetime.strptime(
-                    project['@lastBuildTime']+'UTC',
-                    '%Y-%m-%dT%X%Z')
-                age = datetime.now() - build_date
-                total_age += age.days * 3600 + age.seconds
+            project_data['lastBuildTime'] = build_date
+            project_data['age'] = age
 
-        builds = 0
-        for pipeline, count in iteritems(pipelines):
-            builds += count
-
-        self.metrics['stages'] = stages
-        self.metrics['pipelines'] = len(pipelines)
-        self.metrics['builds'] = builds
-        self.metrics['status_totals'] = status_totals
-        self.metrics['total_age'] = total_age
+            self.projects[project_name] = project_data

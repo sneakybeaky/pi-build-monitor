@@ -21,12 +21,16 @@ setup_dir = dirname(__file__)
 package_name = 'uh_build_monitor'
 
 scripts = []
+for thing in listdir('bin'):
+    path = join('bin', thing)
+    if isfile(path):
+        scripts.append(path)
 
 install_requires=open(join(setup_dir, 'requirements.txt')).readlines()
 
 setup(
     name=package_name,
-    version='0.1',
+    version='0.2',
     description='Raspberry PI & Unicorn HAT build monitor',
     author='Jon Barber & Iain Miller',
     author_email='jon.barber@acm.org',
